@@ -45,7 +45,7 @@ export default {
       msalApp = {
         config: {
           auth: {
-            clientId: null
+            clientId: 'b788178f-1cf7-4b97-be85-77bf7b79ca17'
           }
         },
 
@@ -82,7 +82,7 @@ export default {
       auth: {
         clientId: clientId,
         redirectUri: window.location.origin,
-        authority: 'https://login.microsoftonline.com/common'
+        authority: 'https://login.microsoftonline.us/bda21ce0-034e-4216-ade3-82bba27a3df4'
       },
       cache: {
         cacheLocation: 'localStorage'
@@ -117,7 +117,15 @@ export default {
   //
   // Login a user with a popup
   //
-  async login(scopes = ['user.read', 'openid', 'profile', 'email']) {
+  async login(
+    scopes = [
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/App.Read.All',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Dashboard.Read.All',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Report.Read.ALl',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Workspace.Read.All',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Dataset.Read.All'
+    ]
+  ) {
     if (!msalApp) {
       return
     }
@@ -162,7 +170,15 @@ export default {
   //
   // Call through to acquireTokenSilent or acquireTokenPopup
   //
-  async acquireToken(scopes = ['user.read']) {
+  async acquireToken(
+    scopes = [
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/App.Read.All',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Dashboard.Read.All',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Report.Read.ALl',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Workspace.Read.All',
+      'https://high.analysis.usgovcloudapi.net/powerbi/api/Dataset.Read.All'
+    ]
+  ) {
     if (!msalApp) {
       return null
     }

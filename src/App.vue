@@ -120,7 +120,6 @@ import auth from './services/auth'
 import graph from './services/graph'
 import Login from './components/Login'
 import DetailsModal from './components/DetailsModal'
-import Search from './components/Search'
 
 export default {
   name: 'App',

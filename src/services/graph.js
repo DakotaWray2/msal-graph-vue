@@ -8,8 +8,14 @@
 
 import auth from './auth'
 
-const GRAPH_BASE = 'https://graph.microsoft.com/beta'
-const GRAPH_SCOPES = ['user.read', 'user.readbasic.all']
+const GRAPH_BASE = 'https://api.high.powerbigov.us/v1.0/myorg'
+const GRAPH_SCOPES = [
+  'https://high.analysis.usgovcloudapi.net/powerbi/api/App.Read.All',
+  'https://high.analysis.usgovcloudapi.net/powerbi/api/Dashboard.Read.All',
+  'https://high.analysis.usgovcloudapi.net/powerbi/api/Report.Read.ALl',
+  'https://high.analysis.usgovcloudapi.net/powerbi/api/Workspace.Read.All',
+  'https://high.analysis.usgovcloudapi.net/powerbi/api/Dataset.Read.All'
+]
 
 let accessToken
 
@@ -19,7 +25,7 @@ export default {
   // https://docs.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http#response-1
   //
   async getSelf() {
-    let resp = await callGraph('/me')
+    let resp = await callGraph('/datasets/6ee70ff8-7b70-4b2a-b630-11405d2a9a85')
     if (resp) {
       let data = await resp.json()
       return data
@@ -30,27 +36,27 @@ export default {
   // Get user's photo and return as a blob object URL
   // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
   //
-  async getPhoto() {
-    let resp = await callGraph('/me/photos/240x240/$value')
-    if (resp) {
-      let blob = await resp.blob()
-      return URL.createObjectURL(blob)
-    }
-  },
+  // async getPhoto() {
+  //   let resp = await callGraph('/datasets/6ee70ff8-7b70-4b2a-b630-11405d2a9a85')
+  //   if (resp) {
+  //     let blob = await resp.blob()
+  //     return URL.createObjectURL(blob)
+  //   }
+  // },
 
   //
   // Search for users
   // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
   //
-  async searchUsers(searchString, max = 50) {
-    let resp = await callGraph(
-      `/users?$filter=startswith(displayName, '${searchString}') or startswith(userPrincipalName, '${searchString}')&$top=${max}`
-    )
-    if (resp) {
-      let data = await resp.json()
-      return data
-    }
-  },
+  // async searchUsers() {
+  //   let resp = await callGraph(
+  //     `/datasets/6ee70ff8-7b70-4b2a-b630-11405d2a9a85`
+  //   )
+  //   if (resp) {
+  //     let data = await resp.json()
+  //     return data
+  //   }
+  // },
 
   //
   // Accessor for access token, only included for demo purposes
@@ -69,7 +75,11 @@ async function callGraph(apiPath) {
   accessToken = await auth.acquireToken(GRAPH_SCOPES)
 
   let resp = await fetch(`${GRAPH_BASE}${apiPath}`, {
-    headers: { authorization: `bearer ${accessToken}` }
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${accessToken}`
+    }
   })
 
   if (!resp.ok) {
